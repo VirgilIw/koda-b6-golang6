@@ -12,17 +12,21 @@ import (
 
 func processQueque(ch chan internal.Data, wg *sync.WaitGroup, mu *sync.Mutex) {
 	defer wg.Done()
+	data := 5
+	for range data {
+		data := <-ch
 
-	for data := range ch {
 		mu.Lock()
 		fmt.Printf("yang memesan:%s \n", data.Name)
 		mu.Unlock()
-		for i := data.Wait; i > 0; i-- {
+
+		for j := data.Wait; j > 0; j-- {
 			mu.Lock()
-			fmt.Printf("Silahkan tunggu %d detik...\n", i)
+			fmt.Printf("Silahkan tunggu %d detik...\n", j)
 			mu.Unlock()
-			time.Sleep(1000 * time.Millisecond)
+			time.Sleep(1 * time.Second)
 		}
+
 		mu.Lock()
 		fmt.Println("Selesai:", data.Name)
 		fmt.Println("------------------")
@@ -34,9 +38,8 @@ func main() {
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	ch := make(chan internal.Data)
-	go internal.Queque(ch)
-	//
-	wg.Add(1)
+	wg.Add(2)
+	go internal.Queque(ch, &wg)
 	go processQueque(ch, &wg, &mu)
 	//
 	wg.Wait()

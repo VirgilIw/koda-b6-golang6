@@ -1,11 +1,14 @@
 package internal
 
+import "sync"
+
 type Data struct {
 	Name string
 	Wait int
 }
 
-func Queque(ch chan Data) {
+func Queque(ch chan Data, wg *sync.WaitGroup) {
+	defer wg.Done()
 	data := []Data{
 		{Name: "vir", Wait: 4},
 		{Name: "ver", Wait: 3},
@@ -17,5 +20,4 @@ func Queque(ch chan Data) {
 	for _, x := range data {
 		ch <- x
 	}
-	close(ch)
 }

@@ -10,23 +10,19 @@ import (
 
 // mutex itu mengunci akses ke bagian kode tertentu supaya hanya satu goroutine yang bisa masuk pada saat yang sama.
 
-func processQueue(ch chan internal.Data, wg *sync.WaitGroup, mu *sync.Mutex) {
+func processQueque(ch chan internal.Data, wg *sync.WaitGroup, mu *sync.Mutex) {
 	defer wg.Done()
 
 	for data := range ch {
-
 		mu.Lock()
-		fmt.Printf("Yang Memesan: %s\n", data.Name)
+		fmt.Printf("yang memesan:%s \n", data.Name)
 		mu.Unlock()
-
 		for i := data.Wait; i > 0; i-- {
 			mu.Lock()
-			fmt.Printf("Tunggu %d detik...\n", i)
+			fmt.Printf("Silahkan tunggu %d detik...\n", i)
 			mu.Unlock()
-
-			time.Sleep(1 * time.Second)
+			time.Sleep(1000 * time.Millisecond)
 		}
-
 		mu.Lock()
 		fmt.Println("Selesai:", data.Name)
 		fmt.Println("------------------")
@@ -35,15 +31,13 @@ func processQueue(ch chan internal.Data, wg *sync.WaitGroup, mu *sync.Mutex) {
 }
 
 func main() {
-	ch := make(chan internal.Data)
-
 	var wg sync.WaitGroup
 	var mu sync.Mutex
-
-	go internal.Queue(ch)
-
+	ch := make(chan internal.Data)
+	go internal.Queque(ch)
+	//
 	wg.Add(1)
-	go processQueue(ch, &wg, &mu)
-
+	go processQueque(ch, &wg, &mu)
+	//
 	wg.Wait()
 }

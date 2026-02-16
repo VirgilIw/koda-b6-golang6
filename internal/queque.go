@@ -5,27 +5,17 @@ type Data struct {
 	Wait int
 }
 
-func Queue(ch chan Data) {
+func Queque(ch chan Data) {
 	data := []Data{
-		{
-			Name: "virgil",
-			Wait: 5},
-		{
-			Name: "test",
-			Wait: 2},
-		{
-			Name: "piuu",
-			Wait: 3},
-		{
-			Name: "check",
-			Wait: 8},
+		{Name: "vir", Wait: 4},
+		{Name: "ver", Wait: 3},
+		{Name: "vur", Wait: 6},
+		{Name: "vor", Wait: 2},
+		{Name: "vmr", Wait: 1},
 	}
 
-	// key, index
-	for _, i := range data {
-		ch <- i
+	for _, x := range data {
+		ch <- x
 	}
-
 	close(ch)
-	// close(channel) di Go itu menandakan bahwa tidak akan ada data lagi yang dikirim ke channel tersebut.
 }

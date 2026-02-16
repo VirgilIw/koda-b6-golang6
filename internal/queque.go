@@ -2,11 +2,6 @@ package internal
 
 import "sync"
 
-type Data struct {
-	Name string
-	Wait int
-}
-
 func Queque(ch chan Data, wg *sync.WaitGroup) {
 	defer wg.Done()
 	data := []Data{
